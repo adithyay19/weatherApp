@@ -1,33 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import { Card, CardHeader } from '@mui/material';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [lat, setLat] = useState(0.0);
+  const [lon, setLon] = useState(0.0);
+  const [loc, setLoc] = useState();
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLat(position.coords.latitude);
+      setLon(position.coords.longitude);
+    });
+  }, [lat,lon]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Card variant='outlined' sx={{maxWidth: 345, maxHeight: 500}}>
+        <CardHeader
+          title='Weather'
+          subheader="~city~"
+        />
+
+        <h1>{lat}, {lon}</h1>
+      </Card>
     </>
   )
 }
